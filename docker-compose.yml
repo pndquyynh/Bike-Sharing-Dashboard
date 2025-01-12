@@ -1,0 +1,57 @@
+version: "3.9"
+
+services:
+  client:
+    build:
+      context: ./client
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./client:/client
+    stdin_open: true
+    tty: true
+
+  grafana:
+    image: grafana/grafana-enterprise
+    container_name: grafana
+    restart: unless-stopped
+    ports:
+      - '3003:3000'
+
+  db:
+    image: timescale/timescaledb:latest-pg14
+    restart: always
+    container_name: timescaledb 
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      -  ./data:/var/lib/postgresql/data
+    networks:
+      - mynet
+
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    container_name: pgadmin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    ports:
+      - "8000:80"
+    depends_on:
+      - db
+    networks:
+      - mynet
+
+volumes:
+  db_data:
+    driver: local
+
+networks:
+  mynet:
+    driver: bridge
+
+
