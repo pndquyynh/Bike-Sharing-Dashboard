@@ -5,7 +5,7 @@ services:
     build:
       context: ./client
     ports:
-      - "3000:3000"
+      - "3001:3000"
     volumes:
       - ./client:/client
     stdin_open: true
@@ -17,6 +17,20 @@ services:
     restart: unless-stopped
     ports:
       - '3003:3000'
+
+  server:
+    build:
+      context: ./server
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./server:/server
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/daily_rental
+    depends_on:
+      - db
+    networks:
+      - mynet
 
   db:
     image: timescale/timescaledb:latest-pg14
@@ -40,11 +54,13 @@ services:
       - PGADMIN_DEFAULT_EMAIL=admin@admin.com
       - PGADMIN_DEFAULT_PASSWORD=admin
     ports:
-      - "8000:80"
+      - "8080:80"
     depends_on:
       - db
     networks:
       - mynet
+  
+
 
 volumes:
   db_data:
