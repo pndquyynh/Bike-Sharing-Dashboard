@@ -5,32 +5,40 @@ services:
     build:
       context: ./client
     ports:
-      - "3001:3000"
+      - "5173:5173"
+    restart: always
+    container_name: client 
     volumes:
-      - ./client:/client
+      - ./client:/app/src
     stdin_open: true
     tty: true
+    networks:
+      - mynet
 
   grafana:
     image: grafana/grafana-enterprise
     container_name: grafana
-    restart: unless-stopped
+    restart: always
     ports:
       - '3003:3000'
-
-  server:
-    build:
-      context: ./server
-    ports:
-      - "8000:8000"
     volumes:
-      - ./server:/server
-    environment:
-      - DATABASE_URL=postgres://postgres:postgres@db:5432/daily_rental
-    depends_on:
-      - db
+      - ./grafana:/var/lib/grafana
     networks:
       - mynet
+
+  # server:
+  #   build:
+  #     context: ./server
+  #   ports:
+  #     - "8000:8000"
+  #   volumes:
+  #     - ./server:/server
+  #   environment:
+  #     - DATABASE_URL=postgres://postgres:postgres@db:5432/daily_rental
+  #   depends_on:
+  #     - db
+  #   networks:
+  #     - mynet
 
   db:
     image: timescale/timescaledb:latest-pg14
@@ -60,8 +68,6 @@ services:
     networks:
       - mynet
   
-
-
 volumes:
   db_data:
     driver: local
