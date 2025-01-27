@@ -1,3 +1,5 @@
 /cleandata/batch/data
 /.venv
 /data
+/grafana/plugins
+cleandata/gbfs_fetch

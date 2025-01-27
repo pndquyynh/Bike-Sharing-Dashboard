@@ -6,7 +6,9 @@
 
 <header>
 	<div class="corner">
-		<a href="/about"><img src="" style="height: 24px; width: 24px" alt="Home"></a>
+		<a href="/">
+			<img src="./src/lib/images/home.png" style="height: 24px; width: 24px" alt="Home">
+		</a>
 	</div>
 
 	<nav>
@@ -22,13 +24,6 @@
 			</li>
 			<li aria-current={$page.url.pathname.startsWith('/mkt&dmnd') ? 'page' : undefined}>
 				<a href="/marketing">Marketing and Demand Managers</a>
-			</li>
-			<li aria-current={$page.url.pathname.startsWith('/planners') ? 'page' : undefined}>
-				<a href="/planners">Strategic Planners and Urban Authorities
-				</a>
-			</li>
-			<li aria-current={$page.url.pathname.startsWith('/stakeholders') ? 'page' : undefined}>
-				<a href="/stakeholders">Executives and Stakeholders</a>
 			</li>
 		</ul>
 		<svg viewBox="0 0 2 3" aria-hidden="true">
