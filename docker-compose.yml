@@ -1,74 +1,6 @@
 version: "3.9"
 
 services:
-  db:
-      image: timescale/timescaledb:latest-pg14
-      restart: always
-      container_name: timescaledb 
-      environment:
-        - POSTGRES_USER=postgres
-        - POSTGRES_PASSWORD=postgres
-      ports:
-        - "5432:5432"
-      volumes:
-        -  ./data:/var/lib/postgresql/data
-      networks:
-        - mynet
-  
-  renderer:
-    image: grafana/grafana-image-renderer:latest
-    container_name: renderer
-    restart: always
-    environment:
-      GF_RENDERING_SERVER: "true"
-    networks:
-      - mynet
-
-  grafana:
-    image: grafana/grafana-enterprise
-    container_name: grafana
-    restart: always
-    ports:
-      - '3003:3000'
-    volumes:
-      - ./grafana:/var/lib/grafana
-      - ./grafana/grafana.ini:/etc/grafana/grafana.ini
-    environment:
-      GF_RENDERING_SERVER_URL: http://renderer:8081/render
-      GF_RENDERING_CALLBACK_URL: http://grafana:3000/
-      GF_LOG_FILTERS: rendering:debug
-    networks:
-      - mynet
-
-  server:
-    build:
-      context: ./server
-    ports:
-      - "8000:8000"
-    volumes:
-      - ./server:/server
-    environment:
-      - DATABASE_URL=postgres://postgres:postgres@db:5432/postgres
-    depends_on:
-      - db
-    networks:
-      - mynet
-  
-  pgadmin:
-    image: dpage/pgadmin4
-    restart: always
-    container_name: pgadmin
-    environment:
-      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
-      - PGADMIN_DEFAULT_PASSWORD=admin
-    ports:
-      - "8080:80"
-    depends_on:
-      - db
-    networks:
-      - mynet
-  
-
   client:
     build:
       context: ./client
@@ -83,6 +15,75 @@ services:
     networks:
       - mynet
 
+  grafana:
+    image: grafana/grafana-enterprise
+    container_name: grafana
+    restart: always
+    ports:
+      - '3003:3000'
+    volumes:
+      - ./grafana:/var/lib/grafana
+      - ./grafana/grafana.ini:/etc/grafana/grafana.ini
+    networks:
+      - mynet
+
+  # server:
+  #   build:
+  #     context: ./server
+  #   ports:
+  #     - "8000:8000"
+  #   volumes:
+  #     - ./server:/server
+  #   environment:
+  #     - DATABASE_URL=postgres://postgres:postgres@db:5432/daily_rental
+  #   depends_on:
+  #     - db
+  #   networks:
+  #     - mynet
+
+  db:
+    image: timescale/timescaledb:latest-pg14
+    restart: always
+    container_name: timescaledb 
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      -  ./data:/var/lib/postgresql/data
+    networks:
+      - mynet
+
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    container_name: pgadmin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+    networks:
+      - mynet
+  
+  server:
+    build:
+      context: ./server
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./server:/server
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/postgres
+    depends_on:
+      - db
+    networks:
+      - mynet
+  
+
 volumes:
   db_data:
     driver: local
@@ -90,5 +91,3 @@ volumes:
 networks:
   mynet:
     driver: bridge
-
-
