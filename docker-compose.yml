@@ -23,23 +23,9 @@ services:
       - '3003:3000'
     volumes:
       - ./grafana:/var/lib/grafana
-      - ./grafana/grafana.ini:/etc/grafana/grafana.ini
+      - ./grafana/config/grafana.ini:/etc/grafana/grafana.ini 
     networks:
       - mynet
-
-  # server:
-  #   build:
-  #     context: ./server
-  #   ports:
-  #     - "8000:8000"
-  #   volumes:
-  #     - ./server:/server
-  #   environment:
-  #     - DATABASE_URL=postgres://postgres:postgres@db:5432/daily_rental
-  #   depends_on:
-  #     - db
-  #   networks:
-  #     - mynet
 
   db:
     image: timescale/timescaledb:latest-pg14
@@ -74,6 +60,7 @@ services:
       context: ./server
     ports:
       - "8000:8000"
+    restart: always
     volumes:
       - ./server:/server
     environment:
