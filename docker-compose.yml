@@ -1,17 +1,17 @@
 version: "3.9"
 
 services:
-  client:
-    build:
-      context: ./client
-    ports:
-      - "5173:5173"
+  db:
+    image: timescale/timescaledb:latest-pg14
     restart: always
-    container_name: client 
+    container_name: timescaledb 
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
     volumes:
-      - ./client:/app/src
-    stdin_open: true
-    tty: true
+      -  ./data:/var/lib/postgresql/data
     networks:
       - mynet
 
@@ -24,20 +24,6 @@ services:
     volumes:
       - ./grafana:/var/lib/grafana
       - ./grafana/config/grafana.ini:/etc/grafana/grafana.ini 
-    networks:
-      - mynet
-
-  db:
-    image: timescale/timescaledb:latest-pg14
-    restart: always
-    container_name: timescaledb 
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-    ports:
-      - "5432:5432"
-    volumes:
-      -  ./data:/var/lib/postgresql/data
     networks:
       - mynet
 
@@ -70,6 +56,19 @@ services:
     networks:
       - mynet
   
+  client:
+    build:
+      context: ./client
+    ports:
+      - "5173:5173"
+    restart: always
+    container_name: client 
+    volumes:
+      - ./client:/app/src
+    stdin_open: true
+    tty: true
+    networks:
+      - mynet
 
 volumes:
   db_data:
