@@ -19,11 +19,8 @@
 			<li aria-current={$page.url.pathname === '/operation' ? 'page' : undefined}>
 				<a href="/operation">Operations Managers</a>
 			</li>
-			<li aria-current={$page.url.pathname === '/maintenance' ? 'page' : undefined}>
-				<a href="/maintenance">Maintenance Teams</a>
-			</li>
-			<li aria-current={$page.url.pathname.startsWith('/mkt&dmnd') ? 'page' : undefined}>
-				<a href="/marketing">Marketing and Demand Managers</a>
+			<li aria-current={$page.url.pathname.startsWith('/analyst') ? 'page' : undefined}>
+				<a href="/analyst">Marketing and Demand Managers</a>
 			</li>
 		</ul>
 		<svg viewBox="0 0 2 3" aria-hidden="true">
@@ -32,7 +29,7 @@
 	</nav>
 
 	<div class="corner">
-		<a href="https://github.com/pndquyynh/Thesis" target="_blank" rel="noopener">
+		<a href=" " target="_blank" rel="noopener">
 			<img src={github} alt="GitHub" />
 		</a>
 	</div>
