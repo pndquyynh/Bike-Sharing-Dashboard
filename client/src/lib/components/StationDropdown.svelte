@@ -58,3 +58,18 @@
     </select>
   </div>
 </div>
+
+<style>
+    
+  #station {
+  width: 250px;
+  min-width: 250px;
+  max-width: 250px; 
+  height: 40px;
+  font-size: 16px;
+  padding: 5px;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+</style>
