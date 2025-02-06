@@ -7,14 +7,16 @@
       onViewTypeSelected(event.target.value); // Call the callback with the selected value
     };
   </script>
-  
-  <label for="viewType">View Type</label>
-  <select id="viewType" bind:value on:change={handleChange}>
-    <option value="whole">Whole Station Distribution</option>
-    <option value="region">Region-Based View</option>
-    <option value="station">Station-Based View</option>
-  </select>
-  
+  <div>
+      <label for="viewType">View Type</label>
+        <div style="margin-top: 5px;">
+          <select id="viewType" bind:value on:change={handleChange}>
+            <option value="whole">Whole Station Distribution</option>
+            <option value="region">Region-Based View</option>
+            <option value="station">Station-Based View</option>
+          </select>
+        </div>
+  </div>
   <style>
     #viewType {
     width: 250px;
@@ -25,5 +27,6 @@
     padding: 5px;
     border-radius: 5px;
     box-sizing: border-box;
+    
   }
   </style>

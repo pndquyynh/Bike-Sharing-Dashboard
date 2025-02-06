@@ -1,4 +1,3 @@
-<!-- StationDropdown.svelte -->
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
 

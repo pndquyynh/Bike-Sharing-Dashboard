@@ -32,16 +32,18 @@
 
   function validateAndDispatch() {
     if (selectedFromYear && selectedFromMonth && selectedToYear && selectedToMonth) {
+      // Use ISO format for proper date parsing
       const fromDate = new Date(`${selectedFromYear}-${selectedFromMonth}-01`);
       const toDate = new Date(`${selectedToYear}-${selectedToMonth}-01`);
 
       if (toDate >= fromDate) {
+        // Dispatch the event with the dates formatted as MM-YYYY
         dispatch("dateRangeSelected", {
-          from: `${selectedFromYear}-${selectedFromMonth}`,
-          to: `${selectedToYear}-${selectedToMonth}`
+          from: `${selectedFromMonth}-${selectedFromYear}`,
+          to: `${selectedToMonth}-${selectedToYear}`
         });
       } else {
-        alert("The 'To' date cannot be earlier than the 'From' date.");
+        alert("The Date Range is not valid, please try again");
         // Clear the "To" date fields
         selectedToMonth = null;
         selectedToYear = null;
